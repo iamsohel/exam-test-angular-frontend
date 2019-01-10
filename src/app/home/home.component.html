@@ -1,0 +1,58 @@
+﻿<a style="color:white" class="btn btn-success mx-2" routerLink="/add"
+  >Add user</a
+>
+<a
+  style="color:white"
+  class="btn btn-dark"
+  href="http://localhost:3001/api/file"
+  >Export User</a
+>
+<form
+  class="form-inline"
+  [formGroup]="searchForm"
+  (ngSubmit)="onSubmit()"
+  style="margin-top:20px;"
+>
+  <div class="form-group mx-sm-3 mx-2">
+    <input
+      type="text"
+      formControlName="search"
+      class="form-control"
+      id="inputPassword2"
+      placeholder="Search user with email or name"
+    />
+  </div>
+  <button type="submit" class="btn btn-primary mx-2">Search</button>
+  <button type="submit" class="btn btn-danger mx-2">Reset</button>
+</form>
+<table class="table" style="margin-top:50px;">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="updateUser(user._id)"
+        >
+          Update
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger mx-2"
+          (click)="deleteUser(user._id)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
