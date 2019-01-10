@@ -9,7 +9,13 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getAll(query?: string) {
-    return this.http.get<User[]>(`${EndPoint}/users?search=${query ? query : ''}`);
+    if (query) {
+      return this.http.get<User[]>(
+        `${EndPoint}/users?search=${query ? query : ""}`
+      );
+    } else {
+      return this.http.get<User[]>(`${EndPoint}/users`);
+    }
   }
 
   getById(id: string) {
