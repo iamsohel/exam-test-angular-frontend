@@ -1,7 +1,6 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { first } from "rxjs/operators";
 
 import { AlertService, UserService, AuthenticationService } from "../_services";
 
@@ -46,18 +45,15 @@ export class RegisterComponent implements OnInit {
 
     this.loading = true;
     console.log(this.registerForm.value);
-    this.authenticationService
-      .register(this.registerForm.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.alertService.success("Registration successful", true);
-          this.router.navigate(["/login"]);
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        }
-      );
+    this.authenticationService.register(this.registerForm.value).subscribe(
+      data => {
+        this.alertService.success("Registration successful", true);
+        this.router.navigate(["/login"]);
+      },
+      error => {
+        this.alertService.error(error);
+        this.loading = false;
+      }
+    );
   }
 }

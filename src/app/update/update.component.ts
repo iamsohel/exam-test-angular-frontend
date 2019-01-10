@@ -10,24 +10,24 @@ export class UpdateComponent implements OnInit {
   updateForm: FormGroup;
   loading = false;
   submitted = false;
-  user_id : string;
+  user_id: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private route : ActivatedRoute,
+    private route: ActivatedRoute,
     private authenticationService: AuthenticationService,
     private userService: UserService,
     private alertService: AlertService
   ) {
-     this.user_id = route.snapshot.paramMap.get('id');
-     console.log(this.user_id);
+    this.user_id = route.snapshot.paramMap.get("id");
+    console.log(this.user_id);
   }
 
   ngOnInit() {
     this.updateForm = this.formBuilder.group({
       name: ["", Validators.required],
-      _id : [""],
+      _id: [""],
       email: [""]
     });
     this.userService.getById(this.user_id).subscribe(data => {
@@ -50,18 +50,15 @@ export class UpdateComponent implements OnInit {
 
     this.loading = true;
     console.log(this.updateForm.value);
-    this.userService
-      .update(this.updateForm.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.alertService.success("User Updated successful", true);
-          this.router.navigate(["/"]);
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        }
-      );
+    this.userService.update(this.updateForm.value).subscribe(
+      data => {
+        this.alertService.success("User Updated successful", true);
+        this.router.navigate(["/"]);
+      },
+      error => {
+        this.alertService.error(error);
+        this.loading = false;
+      }
+    );
   }
 }

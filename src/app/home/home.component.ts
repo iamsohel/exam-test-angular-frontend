@@ -1,6 +1,5 @@
 ﻿import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
-import { first, map } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
@@ -42,26 +41,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   deleteUser(id: number) {
-    this.userService
-      .delete(id)
-      .pipe(first())
-      .subscribe(() => {
-        this.loadAllUsers();
-      });
+    this.userService.delete(id).subscribe(() => {
+      this.loadAllUsers();
+    });
   }
 
   updateUser(id: string) {
-   this.router.navigateByUrl(`update/${id}`)
+    this.router.navigateByUrl(`update/${id}`);
   }
 
   file() {
-    this.userService
-      .file()
-      .pipe(first())
-      .subscribe(() => {
-        console.log('files')
-      });
-   }
+    this.userService.file().subscribe(() => {
+      console.log("files");
+    });
+  }
 
   private loadAllUsers() {
     this.userService.getAll().subscribe(res => {
@@ -81,16 +74,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.loading = true;
     console.log(this.searchForm.value);
-    this.userService
-      .getAll(this.searchForm.value.search)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.router.navigate(["/"]);
-        },
-        error => {
-          this.loading = false;
-        }
-      );
+    this.userService.getAll(this.searchForm.value.search).subscribe(
+      data => {
+        this.router.navigate(["/"]);
+      },
+      error => {
+        this.loading = false;
+      }
+    );
   }
 }

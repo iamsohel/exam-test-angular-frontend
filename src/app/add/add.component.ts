@@ -1,9 +1,12 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { first } from "rxjs/operators";
 
-import { AlertService, UserService, AuthenticationService } from "../_services/index";
+import {
+  AlertService,
+  UserService,
+  AuthenticationService
+} from "../_services/index";
 
 @Component({ templateUrl: "add.component.html" })
 export class AddComponent implements OnInit {
@@ -17,9 +20,7 @@ export class AddComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private userService: UserService,
     private alertService: AlertService
-  ) {
-    
-  }
+  ) {}
 
   ngOnInit() {
     this.userForm = this.formBuilder.group({
@@ -44,18 +45,15 @@ export class AddComponent implements OnInit {
 
     this.loading = true;
     console.log(this.userForm.value);
-    this.userService
-      .create(this.userForm.value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.alertService.success("User saved  successful", true);
-          this.router.navigate(["/"]);
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        }
-      );
+    this.userService.create(this.userForm.value).subscribe(
+      data => {
+        this.alertService.success("User saved  successful", true);
+        this.router.navigate(["/"]);
+      },
+      error => {
+        this.alertService.error(error);
+        this.loading = false;
+      }
+    );
   }
 }
