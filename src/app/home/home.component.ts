@@ -41,12 +41,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   deleteUser(id: number) {
+    this.loading = true;
     this.userService.delete(id).subscribe(() => {
       this.loadAllUsers();
     });
   }
 
   updateUser(id: string) {
+    this.loading = true;
     this.router.navigateByUrl(`update/${id}`);
   }
 
@@ -56,10 +58,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadAllUsers() {
-    this.userService.getAll().subscribe(res => {
-      this.users = res;
-    });
+  private loadAllUsers(search?: string) {
+    const query= search ? search : '';
+    this.userService.getAll(query).subscribe(res => {
+        this.users = res;
+        this.loading = false;
+      });
   }
 
   // convenience getter for easy access to form fields
@@ -67,20 +71,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.searchForm.controls;
   }
 
+  reset(){
+    this.searchForm.reset();
+  }
+
   onSubmit() {
     this.submitted = true;
-
-    // stop here if form is invalid
-
     this.loading = true;
-    console.log(this.searchForm.value);
-    this.userService.getAll(this.searchForm.value.search).subscribe(
-      data => {
-        this.router.navigate(["/"]);
-      },
-      error => {
-        this.loading = false;
-      }
-    );
+    this.loadAllUsers(this.searchForm.value.search)
   }
 }
